@@ -13,6 +13,7 @@ async function bootstrap() {
     .setTitle('Gestión de Usuarios')
     .setDescription('API para administrar usuarios con paginación, búsqueda y eliminación lógica')
     .setVersion('1.0')
+    .addServer('http://localhost:3000')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

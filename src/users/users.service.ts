@@ -41,9 +41,11 @@ export class UsersService {
 
     const qb = this.userRepository.createQueryBuilder('user');
 
+    qb.where('user.is_active = :isActive', { isActive: true });
+
     if (query.search) {
       const searchTerm = `%${query.search}%`;
-      qb.where('user.name ILIKE :searchTerm OR user.email ILIKE :searchTerm', {
+      qb.andWhere('user.name ILIKE :searchTerm OR user.email ILIKE :searchTerm', {
         searchTerm,
       });
     }
