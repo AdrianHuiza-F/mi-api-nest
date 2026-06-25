@@ -1,11 +1,22 @@
+import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // ¡Esto es vital! Permite que el Frontend se conecte
   app.enableCors();
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
 
-  // Activamos la validación de datos que vimos antes
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  const config = new DocumentBuilder()
+    .setTitle('Gestión de Usuarios')
+    .setDescription('API para administrar usuarios con paginación, búsqueda y eliminación lógica')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
 }
